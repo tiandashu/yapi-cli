@@ -61,6 +61,7 @@
 生成阶段：使用 npm 配置
 
 ```json
+// 方式一
 {
 	"mcpServers": {
 		"yapi": {
@@ -68,6 +69,20 @@
 			"args": ["-y", "-p", "@vtian/yapi-cli", "yapi-mcp"]
 		}
 	}
+}
+
+// 方式二 使用了 fnm、nvm 等 node 管理器，子进程中可能没有初始化 node 环境导致报错，使用下面的配置
+{
+    "mcpServers": {
+        "yapi-cli": {
+            "command": "/bin/zsh",
+            "args": [
+                "-lic",
+                "exec npx -y -p @vtian/yapi-cli yapi-mcp"
+            ],
+            "cwd": "${workspaceFolder}"
+        }
+    }
 }
 ```
 
