@@ -75,7 +75,7 @@ npm install -g /absolute/path/to/yapi-cli
 
 ### skill 配置
 
-Skill 给 **Cursor Agent** 用：说明见 `skills/yapi-cli-skill/SKILL.md`，底层是 `yapi-skill`（`dist/skills/yapi-cli-skill/index.js`）与包装脚本 `skills/yapi-cli-skill/scripts/yapi_tool.py`。
+Skill 给 **Cursor Agent** 用：说明见 `skills/yapi-cli-skill/SKILL.md`。Agent **只调 `yapi` CLI**（与 MCP 共用 `cli/public-api`），不再使用 `yapi-skill` 或 Python 包装脚本。`npm run build` 后会把 `SKILL.md` 与 `references/` 复制到 `dist/skills/yapi-cli-skill/`，便于随包分发。
 
 **1. 安装到 Cursor（本仓库）**
 
@@ -96,23 +96,24 @@ npm run build
 **3. 终端自检**（当前目录需能解析到 `yapi.config.json`）
 
 ```bash
-python3 skills/yapi-cli-skill/scripts/yapi_tool.py discover test --limit 3
+node dist/cli/index.js search test --json
 ```
 
-**4. 业务仓库只有 skill、yapi-cli 在别处时**
+**4. 业务仓库使用**
+
+在业务仓库终端中指定 yapi-cli 的 `dist/cli/index.js`（或将 `yapi` 安装到 PATH），**工作目录**设为含 `yapi.config.json` 的项目根，例如：
 
 ```bash
-export YAPI_CLI_ROOT=/absolute/path/to/yapi-cli
-python3 .cursor/skills/yapi-cli-skill/scripts/yapi_tool.py discover login
+node /absolute/path/to/yapi-cli/dist/cli/index.js search login --json
+node /absolute/path/to/yapi-cli/dist/cli/index.js get 119882 -p 1635 --json
 ```
 
-可选：`YAPI_CONFIG_CWD` 指定从哪一目录向上查找 `yapi.config.json`。
+**5. Agent 常用命令**
 
-**5. 直接调二进制（不经过 Python）**
-
-```bash
-node dist/skills/yapi-cli-skill/index.js discover keyword
-node dist/skills/yapi-cli-skill/index.js inspect /api/foo -p 1635
-```
+- `yapi search <keyword> --json` — 搜索结果 JSON  
+- `yapi get <idOrPath> -p <id> --json` — 接口详情  
+- `yapi types <idOrPath> -p <id> --json` — 类型（JSON 信封）  
+- `yapi mock <idOrPath> -p <id> --json` — mock  
+- `yapi list -p <ids> --json` — 分类列表
 
 ### token 对比

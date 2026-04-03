@@ -9,6 +9,7 @@ export function registerTypes(program: Command): void {
     .description('Generate TypeScript types from interface schema')
     .option('-p, --project <id>', 'Single project ID')
     .option('--name <typeName>', 'Override generated type name')
+    .option('--json', 'Output JSON envelope (agent-friendly)')
     .action(async (idOrPath: string, opts) => {
       try {
         const result = await generateTypes({
@@ -16,6 +17,10 @@ export function registerTypes(program: Command): void {
           projectIds: opts.project,
           name: opts.name,
         });
+        if (opts.json) {
+          console.log(JSON.stringify(result, null, 2));
+          return;
+        }
         printTypes(result);
       } catch (e: any) {
         console.error(chalk.red(e.message));

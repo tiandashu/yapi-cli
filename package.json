@@ -1,7 +1,7 @@
 {
   "name": "yapi-cli",
   "version": "1.0.0",
-  "description": "CLI-first YApi toolkit with CLI, MCP adapter, and skill-friendly wrappers",
+  "description": "CLI-first YApi toolkit with MCP adapter; Cursor skills use the same yapi CLI",
   "main": "dist/cli/public-api.js",
   "types": "dist/cli/public-api.d.ts",
   "exports": {
@@ -12,12 +12,11 @@
   },
   "bin": {
     "yapi": "./dist/cli/index.js",
-    "yapi-mcp": "./dist/mcp/index.js",
-    "yapi-skill": "./dist/skills/yapi-cli-skill/index.js"
+    "yapi-mcp": "./dist/mcp/index.js"
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "npm run clean && node ./node_modules/typescript/bin/tsc -p tsconfig.json",
+    "build": "npm run clean && node ./node_modules/typescript/bin/tsc -p tsconfig.json && node scripts/copy-skill-assets.cjs",
     "dev": "ts-node cli/index.ts",
     "start": "node dist/cli/index.js",
     "test": "npm run build && node --test tests/*.test.js"

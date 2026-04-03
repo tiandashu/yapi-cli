@@ -31,4 +31,4 @@ The repo resolves `yapi.config.json` by walking upward from the current working 
 - `activeProjectIds` lists which `projectId` values the CLI, MCP, and skill may use. Implicit defaults and explicit `--project` must reference ids in this list.
 - When `activeProjectIds` has exactly one entry, single-project commands (`get`, `types`, `mock`, etc.) default to that project without `--project`.
 - When it has more than one entry, single-project commands require `--project <projectId>`.
-- Multi-project commands (`list`, `search`, `discover`) use all ids in `activeProjectIds` when `--project` is omitted.
+- Multi-project commands (`list`, `search`) use all ids in `activeProjectIds` when `--project` is omitted.

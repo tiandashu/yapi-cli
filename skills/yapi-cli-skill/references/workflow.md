@@ -4,17 +4,17 @@ Use this skill when an agent needs YApi context before generating code, tests, m
 
 ## Default flow
 
-1. Run `scripts/yapi_tool.py discover <keyword>` to narrow the candidate endpoints.
-2. Pick one result and run `scripts/yapi_tool.py inspect <idOrPath> --project <projectId>`.
-3. Run `scripts/yapi_tool.py types ...` only when the task needs TypeScript declarations.
-4. Run `scripts/yapi_tool.py mock ...` only when the task needs sample response data.
+1. Run `yapi search <keyword> --json` (or `node <yapi-cli>/dist/cli/index.js search <keyword> --json`) to narrow candidates.
+2. Pick one result and run `yapi get <idOrPath> -p <projectId> --json` (add `--full` if compact fields are insufficient).
+3. Run `yapi types <idOrPath> -p <projectId> --json` only when the task needs TypeScript declarations.
+4. Run `yapi mock <idOrPath> -p <projectId> --json` only when the task needs sample response data.
 
 ## Selection rules
 
-- Prefer `discover` over `list` unless the user explicitly asks for a full category dump.
+- Prefer `search --json` over `list --json` unless the user explicitly asks for a full category dump.
 - Prefer exact `projectId` whenever the user or repo context makes it obvious.
-- Use `inspect --full` only when the compact field list is not enough.
-- Rely on `activeProjectIds`: one id means single-project commands default without `--project`; several ids mean multi-project commands use them all, and single-project commands need an explicit `--project` from that list.
+- Use `get --full` only when the compact field list is not enough.
+- Rely on `activeProjectIds`: one id means single-project commands default without `-p`; several ids mean multi-project commands use them all when `-p` is omitted, and single-project commands need an explicit `-p` from that list.
 - If multiple projects match, keep the shortlist small and ask for disambiguation only after local narrowing fails.
 
 ## Output handling
