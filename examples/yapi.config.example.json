@@ -23,6 +23,5 @@
       "baseUrl": "http://localhost:3000"
     }
   ],
-  "defaultProjectId": "1437",
-  "defaultProjectIds": ["1437", "1635"]
+  "activeProjectIds": ["1437", "1635"]
 }

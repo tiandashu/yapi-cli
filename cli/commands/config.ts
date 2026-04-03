@@ -48,6 +48,5 @@ const TEMPLATE: YapiConfigFile = {
       token: 'your_project_token_here',
     },
   ],
-  defaultProjectId: '1437',
-  defaultProjectIds: ['1437'],
+  activeProjectIds: ['1437'],
 };

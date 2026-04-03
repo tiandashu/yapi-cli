@@ -14,7 +14,7 @@ Use this skill when an agent needs YApi context before generating code, tests, m
 - Prefer `discover` over `list` unless the user explicitly asks for a full category dump.
 - Prefer exact `projectId` whenever the user or repo context makes it obvious.
 - Use `inspect --full` only when the compact field list is not enough.
-- Rely on `defaultProjectId` for single-project commands and `defaultProjectIds` for multi-project commands when explicit project IDs are absent.
+- Rely on `activeProjectIds`: one id means single-project commands default without `--project`; several ids mean multi-project commands use them all, and single-project commands need an explicit `--project` from that list.
 - If multiple projects match, keep the shortlist small and ask for disambiguation only after local narrowing fails.
 
 ## Output handling

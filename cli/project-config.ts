@@ -43,18 +43,27 @@ export function loadProjectConfigFile(filePath: string): YapiConfigFile {
 
   const data = raw as Record<string, unknown>;
   const projects = normalizeProjects(data.projects);
-  const defaultProjectId = normalizeOptionalString(data.defaultProjectId, 'defaultProjectId');
-  const defaultProjectIds = normalizeDefaultProjectIds(data.defaultProjectIds ?? legacyDefaultProjectIds(data.defaultProjectId));
+  const activeProjectIds = normalizeActiveProjectIds(data.activeProjectIds);
 
   if (projects.length === 0) {
     throw new Error(`${filePath} must define at least one project`);
   }
 
+  if (!activeProjectIds?.length) {
+    throw new Error(`${filePath} must define a non-empty "activeProjectIds" array`);
+  }
+
+  const projectIdSet = new Set(projects.map(p => p.projectId));
+  for (const id of activeProjectIds) {
+    if (!projectIdSet.has(id)) {
+      throw new Error(`${filePath}: activeProjectIds contains unknown projectId "${id}"`);
+    }
+  }
+
   return {
     baseUrl: normalizeOptionalString(data.baseUrl),
     projects,
-    defaultProjectId,
-    defaultProjectIds,
+    activeProjectIds,
   };
 }
 
@@ -82,23 +91,16 @@ function normalizeProjects(value: unknown): YapiProjectConfigEntry[] {
   });
 }
 
-function legacyDefaultProjectIds(value: unknown): string[] | undefined {
-  if (Array.isArray(value)) {
-    return normalizeDefaultProjectIds(value);
-  }
-  return undefined;
-}
-
-function normalizeDefaultProjectIds(value: unknown): string[] | undefined {
+function normalizeActiveProjectIds(value: unknown): string[] | undefined {
   if (value == null) return undefined;
   if (Array.isArray(value)) {
     const ids = value
       .filter((item): item is string => typeof item === 'string')
       .map(item => item.trim())
       .filter(Boolean);
-    return ids.length ? ids : undefined;
+    return ids.length ? Array.from(new Set(ids)) : undefined;
   }
-  throw new Error(`"defaultProjectId" must be a string or string[]`);
+  throw new Error(`"activeProjectIds" must be an array of strings`);
 }
 
 function normalizeRequiredString(value: unknown, field: string): string {

@@ -8,8 +8,8 @@ export interface YapiProjectConfigEntry {
 export interface YapiConfigFile {
   baseUrl?: string;
   projects: YapiProjectConfigEntry[];
-  defaultProjectId?: string;
-  defaultProjectIds?: string[];
+  /** Only these projectIds may be used by CLI/MCP/skill (implicit defaults and explicit --project). */
+  activeProjectIds: string[];
 }
 
 export interface ResolvedProject {

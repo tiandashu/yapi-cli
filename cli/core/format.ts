@@ -4,8 +4,7 @@ import { CompactInterfaceDetail, ListInterfacesResult, MockResult, SearchMatch, 
 
 export function printConfig(config: LoadedConfig): void {
   console.log(chalk.bold('Config file:'), config.path);
-  console.log(chalk.bold('Default projectId:'), config.config.defaultProjectId || chalk.gray('(none)'));
-  console.log(chalk.bold('Default projectIds:'), config.config.defaultProjectIds?.join(', ') || chalk.gray('(none)'));
+  console.log(chalk.bold('Active projectIds:'), config.config.activeProjectIds.join(', '));
   console.log(chalk.bold('Projects:'));
 
   for (const project of config.config.projects) {

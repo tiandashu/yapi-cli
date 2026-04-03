@@ -24,7 +24,7 @@ export function resolveProjectSelection(config: YapiConfigFile, requested?: stri
   const targetIds = requestedIds ?? inferMultiProjectDefaults(config);
 
   if (targetIds.length === 0) {
-    throw new Error(`No project selected. Use --project <projectId> or set defaultProjectId/defaultProjectIds in yapi.config.json`);
+    throw new Error(`No project selected. Use --project <projectId> or set activeProjectIds in yapi.config.json`);
   }
 
   return targetIds.map(projectId => resolveProjectById(config, projectId));
@@ -35,7 +35,9 @@ export function resolveSingleProject(config: YapiConfigFile, requested?: string 
   const targetId = requestedIds?.[0] ?? inferSingleProjectDefault(config);
 
   if (!targetId) {
-    throw new Error(`Exactly one project is required here. Pass --project <projectId> or set defaultProjectId in yapi.config.json`);
+    throw new Error(
+      `Exactly one project is required here. Pass --project <projectId> or set activeProjectIds to a single id in yapi.config.json`
+    );
   }
 
   if (requestedIds && requestedIds.length > 1) {
@@ -47,6 +49,8 @@ export function resolveSingleProject(config: YapiConfigFile, requested?: string 
 }
 
 export function resolveProjectById(config: YapiConfigFile, projectId: string): ResolvedProject {
+  assertIdsActive(config, [projectId]);
+
   const match = config.projects.find(project => project.projectId === projectId);
   if (!match) {
     const available = config.projects.map(project => project.projectId).join(', ');
@@ -79,29 +83,25 @@ export function normalizeRequestedProjectIds(value?: string | string[]): string[
 }
 
 function inferMultiProjectDefaults(config: YapiConfigFile): string[] {
-  if (config.defaultProjectIds?.length) {
-    return config.defaultProjectIds;
-  }
-  if (config.defaultProjectId) {
-    return [config.defaultProjectId];
-  }
-  if (config.projects.length === 1) {
-    return [config.projects[0].projectId];
-  }
-  return [];
+  return [...config.activeProjectIds];
 }
 
 function inferSingleProjectDefault(config: YapiConfigFile): string | undefined {
-  if (config.defaultProjectId) {
-    return config.defaultProjectId;
-  }
-  if (config.defaultProjectIds?.length === 1) {
-    return config.defaultProjectIds[0];
-  }
-  if (config.projects.length === 1) {
-    return config.projects[0].projectId;
+  if (config.activeProjectIds.length === 1) {
+    return config.activeProjectIds[0];
   }
   return undefined;
+}
+
+function assertIdsActive(config: YapiConfigFile, ids: string[]): void {
+  const active = new Set(config.activeProjectIds);
+  for (const id of ids) {
+    if (!active.has(id)) {
+      throw new Error(
+        `Project "${id}" is not in activeProjectIds. Active: ${config.activeProjectIds.join(', ')}`
+      );
+    }
+  }
 }
 
 function normalizeBaseUrl(baseUrl?: string): string | undefined {

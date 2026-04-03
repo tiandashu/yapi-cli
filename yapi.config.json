@@ -1,28 +1,21 @@
 {
-	"baseUrl": "https://your-yapi.example.com",
+	"baseUrl": "https://capi.staff.xdf.cn",
 	"projects": [
 		{
 			"projectId": "1437",
-			"projectName": "NPC Tasks",
-			"token": "replace-with-your-token"
+			"projectName": "BC项目 / NPC任务",
+			"token": "0565003ff854b08ed845cece7d4bf0d2761e1ade45e9e7cc1f3f444e6dd285f5"
 		},
 		{
 			"projectId": "1269",
-			"projectName": "Admin Backend",
-			"token": "replace-with-your-token"
+			"projectName": "背单词-后台",
+			"token": "c84924cf803a12951c046d068192ca695cfe3258936044f68bef9539c8415de7"
 		},
 		{
 			"projectId": "1635",
-			"projectName": "Camp Backend",
-			"token": "replace-with-your-token"
-		},
-		{
-			"projectId": "local-test",
-			"projectName": "Local Test",
-			"token": "local-token",
-			"baseUrl": "http://localhost:3000"
+			"projectName": "BC项目 / 打卡营-后台",
+			"token": "913abcaa13d48af2001a4d153ce5407e453a3c672a2e79f6bd1d573ee185dc19"
 		}
 	],
-	"defaultProjectId": "1437",
 	"activeProjectIds": ["1437", "1635"]
 }

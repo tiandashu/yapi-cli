@@ -78,6 +78,12 @@ server.tool(
 );
 
 async function main(): Promise<void> {
+  // Stdout is reserved for MCP JSON-RPC; do not log there. In a normal TTY, hint on stderr.
+  if (process.stdin.isTTY && process.stderr.isTTY) {
+    console.error(
+      'yapi-mcp: listening on stdio (stdout is MCP protocol only). Use an MCP client to connect, or Ctrl+C to exit.'
+    );
+  }
   const transport = new StdioServerTransport();
   await server.connect(transport);
 }
