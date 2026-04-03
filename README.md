@@ -4,6 +4,7 @@
 - 支持 cli
 - 支持 mcp
 - 支持 skill
+- 支持多 yapi 项目和多 yapi 空间，配置更方便
 
 ### 配置文件
 
@@ -116,4 +117,11 @@ curl -fsSL https://raw.githubusercontent.com/tiandashu/yapi-cli/refs/heads/maste
 
 可选环境变量：`YAPI_AGENT_DIR`（默认 `.agents/skills`）、`YAPI_SKILLS_ZIP_URL`（覆盖 zip 的下载 URL，便于 fork 或镜像）。
 
-### token 对比
+### token 对比(待办)
+
+- [ ] 对比 mcp 和 skill 两种调用方式对上下文的影响和 token 消耗
+
+### 在 agent 中使用
+
+- 和之前实现的`@vtian/yapi-mcp-server`在 agent 中用法一致
+- https://juejin.cn/post/7526706420093075497
