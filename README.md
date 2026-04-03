@@ -7,7 +7,7 @@
 
 ### 配置文件
 
-[yapi.config.json](./examples/yapi.config.example.json)
+[yapi.config.json](https://github.com/tiandashu/yapi-cli/blob/master/examples/yapi.config.example.json)
 
 - baseUrl: 默认配置到根数据，也可以在单个 project 中覆盖设置
 - projects：为了避免重复设置，支持了多项目配置
