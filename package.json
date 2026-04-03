@@ -4,6 +4,10 @@
 	"description": "CLI-first YApi toolkit with MCP adapter; Cursor skills use the same yapi CLI",
 	"main": "dist/cli/public-api.js",
 	"types": "dist/cli/public-api.d.ts",
+	"files": [
+		"dist",
+		"examples"
+	],
 	"exports": {
 		".": {
 			"types": "./dist/cli/public-api.d.ts",
@@ -16,7 +20,8 @@
 	},
 	"scripts": {
 		"clean": "rm -rf dist",
-    "build": "npm run clean && node ./node_modules/typescript/bin/tsc -p tsconfig.json && node scripts/create-skills-zip.cjs",
+		"build": "npm run clean && node ./node_modules/typescript/bin/tsc -p tsconfig.json && node scripts/create-skills-zip.cjs",
+		"prepack": "npm run build",
 		"dev": "ts-node cli/index.ts",
 		"install:skills": "sh scripts/install-skills.sh",
 		"start": "node dist/cli/index.js",
@@ -30,11 +35,11 @@
 		"axios": "^1.14.0",
 		"chalk": "^4.1.2",
 		"commander": "^14.0.3",
-		"ts-node": "^10.9.2",
-		"typescript": "^6.0.2",
 		"zod": "^4.1.11"
 	},
 	"devDependencies": {
-		"@types/node": "^25.5.0"
+		"@types/node": "^25.5.0",
+		"ts-node": "^10.9.2",
+		"typescript": "^6.0.2"
 	}
 }
