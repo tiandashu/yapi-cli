@@ -1,40 +1,40 @@
 {
-  "name": "yapi-cli",
-  "version": "1.0.0",
-  "description": "CLI-first YApi toolkit with MCP adapter; Cursor skills use the same yapi CLI",
-  "main": "dist/cli/public-api.js",
-  "types": "dist/cli/public-api.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/cli/public-api.d.ts",
-      "require": "./dist/cli/public-api.js"
-    }
-  },
-  "bin": {
-    "yapi": "./dist/cli/index.js",
-    "yapi-mcp": "./dist/mcp/index.js"
-  },
-  "scripts": {
-    "clean": "rm -rf dist",
-    "build": "npm run clean && node ./node_modules/typescript/bin/tsc -p tsconfig.json && node scripts/copy-skill-assets.cjs && node scripts/create-skills-zip.cjs",
-    "dev": "ts-node cli/index.ts",
-    "install:skills": "sh scripts/install-skills.sh",
-    "start": "node dist/cli/index.js",
-    "test": "npm run build && node --test tests/*.test.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.28.0",
-    "axios": "^1.14.0",
-    "chalk": "^4.1.2",
-    "commander": "^14.0.3",
-    "ts-node": "^10.9.2",
-    "typescript": "^6.0.2",
-    "zod": "^4.1.11"
-  },
-  "devDependencies": {
-    "@types/node": "^25.5.0"
-  }
+	"name": "@vtian/yapi-cli",
+	"version": "0.0.1",
+	"description": "CLI-first YApi toolkit with MCP adapter; Cursor skills use the same yapi CLI",
+	"main": "dist/cli/public-api.js",
+	"types": "dist/cli/public-api.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/cli/public-api.d.ts",
+			"require": "./dist/cli/public-api.js"
+		}
+	},
+	"bin": {
+		"yapi": "./dist/cli/index.js",
+		"yapi-mcp": "./dist/mcp/index.js"
+	},
+	"scripts": {
+		"clean": "rm -rf dist",
+		"build": "npm run clean && node ./node_modules/typescript/bin/tsc -p tsconfig.json && node scripts/copy-skill-assets.cjs && node scripts/create-skills-zip.cjs",
+		"dev": "ts-node cli/index.ts",
+		"install:skills": "sh scripts/install-skills.sh",
+		"start": "node dist/cli/index.js",
+		"test": "npm run build && node --test tests/*.test.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.28.0",
+		"axios": "^1.14.0",
+		"chalk": "^4.1.2",
+		"commander": "^14.0.3",
+		"ts-node": "^10.9.2",
+		"typescript": "^6.0.2",
+		"zod": "^4.1.11"
+	},
+	"devDependencies": {
+		"@types/node": "^25.5.0"
+	}
 }
