@@ -1,4 +1,4 @@
-## yapi cli
+# yapi cli
 
 - 支持 yapi 接口信息联调、mock数据、生成 ts 类型
 - 支持 cli
@@ -6,15 +6,46 @@
 - 支持 skill
 - 支持多 yapi 项目和多 yapi 空间，配置更方便
 
-### 配置文件
+## 配置文件
 
 [yapi.config.json](https://github.com/tiandashu/yapi-cli/blob/master/examples/yapi.config.example.json)
+
+```
+{
+  "baseUrl": "https://your-yapi.example.com",
+  "projects": [
+    {
+      "projectId": "1437",
+      "projectName": "NPC Tasks",
+      "token": "replace-with-your-token"
+    },
+    {
+      "projectId": "1269",
+      "projectName": "Admin Backend",
+      "token": "replace-with-your-token"
+    },
+    {
+      "projectId": "1635",
+      "projectName": "Camp Backend",
+      "token": "replace-with-your-token"
+    },
+    {
+      "projectId": "local-test",
+      "projectName": "Local Test",
+      "token": "local-token",
+      "baseUrl": "http://localhost:3000"
+    }
+  ],
+  "activeProjectIds": ["1437", "1635"]
+}
+
+```
 
 - baseUrl: 默认配置到根数据，也可以在单个 project 中覆盖设置
 - projects：为了避免重复设置，支持了多项目配置
 - activeProjectIds：只有在 activeProjectIds 中的 projectId 才会被 ai 查询，避免浪费资源
 
-### cli
+## cli
 
 > 开发阶段调试：node dist/cli/index.js get -p 1635 119882 --json
 
@@ -26,7 +57,7 @@
 - yapi mock <idOrPath> 按响应 schema 生成 mock；-p；--json 带外层信封
 - yapi types <idOrPath> 生成 TS 类型；-p；--name 改类型基名
 
-### mcp 配置
+## mcp 配置
 
 开发阶段：本地配置mcp.json
 
@@ -87,7 +118,7 @@
 }
 ```
 
-### skill 配置
+## skill 配置
 
 `npm run build` 后只会生成一份 skill 产物：
 
@@ -95,7 +126,7 @@
 
 推荐按两步安装，和 CLI 分开发放。
 
-**1. 安装 CLI**
+1. 安装 CLI
 
 ```bash
 npm install -g @vtian/yapi-cli
@@ -107,7 +138,7 @@ npm install -g @vtian/yapi-cli
 yapi --help
 ```
 
-**2. 安装 skill**
+2. 安装 skill
 
 在任意目录执行：脚本会 **始终从 GitHub 下载** `dist/yapi-skills.zip` 并解压到当前目录下的 `.agents/skills/yapi-cli-skill`（需已安装 `curl`、`unzip`）。
 
@@ -117,11 +148,11 @@ curl -fsSL https://raw.githubusercontent.com/tiandashu/yapi-cli/refs/heads/maste
 
 可选环境变量：`YAPI_AGENT_DIR`（默认 `.agents/skills`）、`YAPI_SKILLS_ZIP_URL`（覆盖 zip 的下载 URL，便于 fork 或镜像）。
 
-### token 对比(待办)
-
-- [ ] 对比 mcp 和 skill 两种调用方式对上下文的影响和 token 消耗
-
-### 在 agent 中使用
+## 在 agent 中使用
 
 - 和之前实现的`@vtian/yapi-mcp-server`在 agent 中用法一致
 - https://juejin.cn/post/7526706420093075497
+
+## token 对比(待办)
+
+- [ ] 对比 mcp 和 skill 两种调用方式对上下文的影响和 token 消耗
