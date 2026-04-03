@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "yapi": {
+      "command": "node",
+      "args": ["/absolute/path/to/yapi-cli/dist/mcp/index.js"]
+    }
+  }
+}

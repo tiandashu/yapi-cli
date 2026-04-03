@@ -1,0 +1,28 @@
+{
+  "baseUrl": "https://your-yapi.example.com",
+  "projects": [
+    {
+      "projectId": "1437",
+      "projectName": "NPC Tasks",
+      "token": "replace-with-your-token"
+    },
+    {
+      "projectId": "1269",
+      "projectName": "Admin Backend",
+      "token": "replace-with-your-token"
+    },
+    {
+      "projectId": "1635",
+      "projectName": "Camp Backend",
+      "token": "replace-with-your-token"
+    },
+    {
+      "projectId": "local-test",
+      "projectName": "Local Test",
+      "token": "local-token",
+      "baseUrl": "http://localhost:3000"
+    }
+  ],
+  "defaultProjectId": "1437",
+  "defaultProjectIds": ["1437", "1635"]
+}

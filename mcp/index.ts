@@ -1,0 +1,88 @@
+#!/usr/bin/env node
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { z } from 'zod';
+import {
+  generateMockData,
+  generateTypes,
+  getInterfaceDetails,
+  listInterfaces,
+  searchInterfaces,
+} from '../cli/public-api';
+
+const server = new McpServer({
+  name: 'yapi-mcp',
+  version: '1.0.0',
+});
+
+server.tool(
+  'yapi_search',
+  'Search interfaces by keyword across one or more configured projects.',
+  {
+    keyword: z.string().describe('Search keyword'),
+    projectIds: z.array(z.string()).optional().describe('Optional projectId list'),
+  },
+  async ({ keyword, projectIds }) => ({
+    content: [{ type: 'text', text: JSON.stringify(await searchInterfaces({ keyword, projectIds }), null, 2) }],
+  })
+);
+
+server.tool(
+  'yapi_list',
+  'List interfaces grouped by category across one or more configured projects.',
+  {
+    projectIds: z.array(z.string()).optional().describe('Optional projectId list'),
+    category: z.string().optional().describe('Optional category filter'),
+  },
+  async ({ projectIds, category }) => ({
+    content: [{ type: 'text', text: JSON.stringify(await listInterfaces({ projectIds, category }), null, 2) }],
+  })
+);
+
+server.tool(
+  'yapi_get',
+  'Get compact interface details for a single project.',
+  {
+    idOrPath: z.string().describe('Interface ID or path'),
+    projectId: z.string().optional().describe('Single projectId'),
+    full: z.boolean().optional().describe('Include raw schemas'),
+  },
+  async ({ idOrPath, projectId, full }) => ({
+    content: [{ type: 'text', text: JSON.stringify(await getInterfaceDetails({ idOrPath, projectIds: projectId, full }), null, 2) }],
+  })
+);
+
+server.tool(
+  'yapi_mock',
+  'Generate mock response data for a single project interface.',
+  {
+    idOrPath: z.string().describe('Interface ID or path'),
+    projectId: z.string().optional().describe('Single projectId'),
+  },
+  async ({ idOrPath, projectId }) => ({
+    content: [{ type: 'text', text: JSON.stringify(await generateMockData({ idOrPath, projectIds: projectId }), null, 2) }],
+  })
+);
+
+server.tool(
+  'yapi_types',
+  'Generate TypeScript types for a single project interface.',
+  {
+    idOrPath: z.string().describe('Interface ID or path'),
+    projectId: z.string().optional().describe('Single projectId'),
+    name: z.string().optional().describe('Optional base type name'),
+  },
+  async ({ idOrPath, projectId, name }) => ({
+    content: [{ type: 'text', text: JSON.stringify(await generateTypes({ idOrPath, projectIds: projectId, name }), null, 2) }],
+  })
+);
+
+async function main(): Promise<void> {
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+}
+
+main().catch(error => {
+  console.error(error);
+  process.exit(1);
+});
