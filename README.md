@@ -8,36 +8,11 @@ npm run build
 
 ### 配置文件
 
-yapi.config.json
+[yapi.config.json](./examples/yapi.config.example.json)
 
 - baseUrl: 默认配置到根数据，也可以在单个 project 中覆盖设置
 - projects：为了避免重复设置，支持了多项目配置
 - activeProjectIds：只有在 activeProjectIds 中的 projectId 才会被 ai 查询，避免浪费资源
-
-```json
-{
-	"baseUrl": "https://your-yapi.example.com",
-	"projects": [
-		{
-			"projectId": "1437",
-			"projectName": "NPC Tasks",
-			"token": "replace-with-your-token"
-		},
-		{
-			"projectId": "1269",
-			"projectName": "Admin Backend",
-			"token": "replace-with-your-token"
-		},
-		{
-			"projectId": "1635",
-			"projectName": "Camp Backend",
-			"token": "replace-with-your-token",
-			"baseUrl": "https://your-yapi.example.com"
-		}
-	],
-	"activeProjectIds": ["1437", "1635"]
-}
-```
 
 ### cli
 
@@ -75,45 +50,67 @@ npm install -g /absolute/path/to/yapi-cli
 
 ### skill 配置
 
-Skill 给 **Cursor Agent** 用：说明见 `skills/yapi-cli-skill/SKILL.md`。Agent **只调 `yapi` CLI**（与 MCP 共用 `cli/public-api`），不再使用 `yapi-skill` 或 Python 包装脚本。`npm run build` 后会把 `SKILL.md` 与 `references/` 复制到 `dist/skills/yapi-cli-skill/`，便于随包分发。
+Skill 给 **Cursor Agent** 用：说明见 `skills/yapi-cli-skill/SKILL.md`。Agent **只调 `yapi` CLI**（与 MCP 共用 `cli/public-api`），不再使用 `yapi-skill` 或 Python 包装脚本。
 
-**1. 安装到 Cursor（本仓库）**
+`npm run build` 后会生成两份 skill 产物：
+
+- `dist/skills/yapi-cli-skill/`：解压后的 skill 目录
+- `dist/yapi-skills.zip`：可分发的 skill 压缩包
+
+推荐按两步安装，和 CLI 分开发放。
+
+**1. 安装 CLI**
+
+```bash
+npm install -g /absolute/path/to/yapi-cli
+```
+
+安装后应能直接执行：
+
+```bash
+yapi --help
+```
+
+**2. 安装 skill**
+
+安装到当前项目的 `.agents/skills/yapi-cli-skill`：
 
 ```bash
 cd /absolute/path/to/yapi-cli
-mkdir -p .cursor/skills
-ln -sf "$(pwd)/skills/yapi-cli-skill" .cursor/skills/yapi-cli-skill
+npm run build
+npm run install:skills
 ```
 
-在 Cursor 设置中启用 **Agent / Skills**，并确保会加载 `.cursor/skills`。
-
-**2. 构建**
+也可以手动解压 `dist/yapi-skills.zip` 到任一 agent skills 目录，例如：
 
 ```bash
-npm run build
+mkdir -p /path/to/project/.agents/skills/yapi-cli-skill
+unzip -q /absolute/path/to/yapi-cli/dist/yapi-skills.zip -d /path/to/project/.agents/skills/yapi-cli-skill
 ```
+
+在 Cursor 设置中启用 **Agent / Skills**，并确保会加载 `.agents/skills` 或对应平台的 skills 目录。
 
 **3. 终端自检**（当前目录需能解析到 `yapi.config.json`）
 
 ```bash
-node dist/cli/index.js search test --json
+yapi search test --json
 ```
 
 **4. 业务仓库使用**
 
-在业务仓库终端中指定 yapi-cli 的 `dist/cli/index.js`（或将 `yapi` 安装到 PATH），**工作目录**设为含 `yapi.config.json` 的项目根，例如：
+在业务仓库终端中使用 `yapi`，**工作目录**设为含 `yapi.config.json` 的项目根，例如：
 
 ```bash
-node /absolute/path/to/yapi-cli/dist/cli/index.js search login --json
-node /absolute/path/to/yapi-cli/dist/cli/index.js get 119882 -p 1635 --json
+yapi search login --json
+yapi get 119882 -p 1635 --json
 ```
 
 **5. Agent 常用命令**
 
-- `yapi search <keyword> --json` — 搜索结果 JSON  
-- `yapi get <idOrPath> -p <id> --json` — 接口详情  
-- `yapi types <idOrPath> -p <id> --json` — 类型（JSON 信封）  
-- `yapi mock <idOrPath> -p <id> --json` — mock  
+- `yapi search <keyword> --json` — 搜索结果 JSON
+- `yapi get <idOrPath> -p <id> --json` — 接口详情
+- `yapi types <idOrPath> -p <id> --json` — 类型（JSON 信封）
+- `yapi mock <idOrPath> -p <id> --json` — mock
 - `yapi list -p <ids> --json` — 分类列表
 
 ### token 对比

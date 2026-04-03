@@ -1,6 +1,10 @@
 ---
 name: yapi-cli-skill
 description: Inspect YApi-managed HTTP interfaces via the same `yapi` CLI used by the MCP adapter (shared `public-api` / service layer). Use when the agent needs to find an endpoint, confirm request or response fields, generate TypeScript types, or mock data in a repo that has `yapi.config.json`.
+metadata:
+  requires:
+    bins: ["yapi"]
+  cliHelp: "yapi --help"
 ---
 
 # yapi-cli-skill
@@ -20,6 +24,10 @@ From the workspace root that contains `yapi.config.json`:
 - TypeScript: `yapi types /user/login -p 1437 --name Login --json`
 - Mock: `yapi mock /user/login -p 1437 --json`
 - List by category: `yapi list -p 1437 --json`
+
+If `yapi` is not on PATH but this skill bundle is available locally, use:
+
+- `node /path/to/yapi-cli/dist/cli/index.js search login --json`
 
 After `npm run build`, the same instructions apply using **`dist/cli/index.js`** inside the yapi-cli package.
 
@@ -48,16 +56,16 @@ After `npm run build`, the same instructions apply using **`dist/cli/index.js`**
 ## Layout
 
 - **Source skill docs:** `skills/yapi-cli-skill/` (`SKILL.md`, `references/`).
-- **After build:** the same files are copied to `dist/skills/yapi-cli-skill/` for packaging; symlink or copy that folder (or the source tree) into `.cursor/skills/yapi-cli-skill` for Cursor.
+- **After build:** the same files are copied to `dist/skills/yapi-cli-skill/` and zipped as `dist/yapi-skills.zip` for packaging.
 
-## Testing in Cursor
+## Installation
 
-1. `mkdir -p .cursor/skills && ln -sf "$(pwd)/skills/yapi-cli-skill" .cursor/skills/yapi-cli-skill` (from yapi-cli repo root), or symlink/copy `dist/skills/yapi-cli-skill` after a build.
-2. Enable Agent Skills in Cursor settings.
-3. `npm run build` in yapi-cli so `dist/cli/index.js` exists.
-4. In the integrated terminal (cwd = project with `yapi.config.json`):  
-   `node /absolute/path/to/yapi-cli/dist/cli/index.js search test --json`
-5. Agent chat: ask to use `yapi search --json` / `yapi get --json` against your config.
+1. Install the CLI so `yapi` is on PATH.
+2. Run `npm run build` in yapi-cli.
+3. Install the skill by extracting `dist/yapi-skills.zip` into an agent skills directory such as `.agents/skills/yapi-cli-skill`, or run `npm run install:skills` from the yapi-cli repo root.
+4. Enable Agent Skills in your client.
+5. In a terminal whose cwd resolves to `yapi.config.json`, run `yapi search test --json`.
+6. In agent chat, ask to use `yapi search --json` / `yapi get --json` against your config.
 
 ## References
 
