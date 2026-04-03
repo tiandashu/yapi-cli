@@ -56,7 +56,7 @@ After `npm run build`, the same instructions apply using **`dist/cli/index.js`**
 ## Layout
 
 - **Source skill docs:** `skills/yapi-cli-skill/` (`SKILL.md`, `references/`).
-- **After build:** the same files are copied to `dist/skills/yapi-cli-skill/` and zipped as `dist/yapi-skills.zip` for packaging.
+- **After build:** `skills/yapi-cli-skill/` is packaged as `dist/yapi-skills.zip`.
 
 ## Installation
 

@@ -4,7 +4,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const root = path.join(__dirname, '..');
-const skillRoot = path.join(root, 'dist', 'skills', 'yapi-cli-skill');
+const skillRoot = path.join(root, 'skills', 'yapi-cli-skill');
 const outZip = path.join(root, 'dist', 'yapi-skills.zip');
 
 if (!fs.existsSync(skillRoot)) {
@@ -21,10 +21,9 @@ try {
   });
 } catch (error) {
   console.error('create-skills-zip: failed to run `zip`.');
-  console.error('Install `zip` or create the archive manually from dist/skills/yapi-cli-skill/.');
+  console.error('Install `zip` or create the archive manually from skills/yapi-cli-skill/.');
   if (error && error.message) {
     console.error(error.message);
   }
   process.exit(1);
 }
-

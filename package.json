@@ -16,7 +16,7 @@
 	},
 	"scripts": {
 		"clean": "rm -rf dist",
-		"build": "npm run clean && node ./node_modules/typescript/bin/tsc -p tsconfig.json && node scripts/copy-skill-assets.cjs && node scripts/create-skills-zip.cjs",
+    "build": "npm run clean && node ./node_modules/typescript/bin/tsc -p tsconfig.json && node scripts/create-skills-zip.cjs",
 		"dev": "ts-node cli/index.ts",
 		"install:skills": "sh scripts/install-skills.sh",
 		"start": "node dist/cli/index.js",
