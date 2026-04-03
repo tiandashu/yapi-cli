@@ -41,10 +41,12 @@ yapi.config.json
 
 ### cli
 
-yapi config list 打印当前解析到的配置路径和内容
-yapi config init 在当前目录生成 yapi.config.json 模板
-yapi list（别名 yapi ls） 按分类列出接口；-p 指定项目；-c 按分类名过滤；--json 输出 JSON
-yapi search <keyword>（别名 yapi s） 按标题/路径搜索；-p 多项目；--json
-yapi get <idOrPath> 接口详情（联调用）；idOrPath 可为数字 id 或 path；-p 单项目；--full 带原始 schema；--json
-yapi mock <idOrPath> 按响应 schema 生成 mock；-p；--json 带外层信封
-yapi types <idOrPath> 生成 TS 类型；-p；--name 改类型基名
+> 开发阶段调试：node dist/cli/index.js get -p 1635 119882 --json
+
+- yapi config list 打印当前解析到的配置路径和内容
+- yapi config init 在当前目录生成 yapi.config.json 模板
+- yapi list（别名 yapi ls） 按分类列出接口；-p 指定项目；-c 按分类名过滤；--json 输出 JSON
+- yapi search <keyword>（别名 yapi s） 按标题/路径搜索；-p 多项目；--json
+- yapi get <idOrPath> 接口详情（联调用）；idOrPath 可为数字 id 或 path；-p 单项目；--full 带原始 schema；--json
+- yapi mock <idOrPath> 按响应 schema 生成 mock；-p；--json 带外层信封
+- yapi types <idOrPath> 生成 TS 类型；-p；--name 改类型基名
