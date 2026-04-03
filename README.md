@@ -1,5 +1,10 @@
 ## yapi cli
 
+- 支持 yapi 接口信息联调、mock数据、生成 ts 类型
+- 支持 cli
+- 支持 mcp
+- 支持 skill
+
 ### start
 
 ```
@@ -28,7 +33,7 @@ npm run build
 
 ### mcp 配置
 
-本地配置mcp.json
+开发阶段：本地配置mcp.json
 
 ```json
 {
@@ -39,13 +44,36 @@ npm run build
 		}
 	}
 }
+
+
+{
+    "mcpServers": {
+        "yapi2": {
+            "command": "npm",
+            "args": [
+                "exec",
+                "--prefix",
+                "/absolute/path/to/yapi-cli",
+                "--",
+                "yapi-mcp"
+            ]
+        }
+    }
+}
+
 ```
 
-通过 npm 全局安装后，可把 `args` 里的脚本路径换成包提供的入口（视安装方式调整）：
+生成阶段：使用 npm 配置
 
-```bash
-npm install -g /absolute/path/to/yapi-cli
-# mcp.json 中可使用 "command": "yapi-mcp" 且 "args": []（若 Cursor 支持无参 command）
+```json
+{
+	"mcpServers": {
+		"yapi": {
+			"command": "npx",
+			"args": ["-y", "-p", "@vtian/yapi-cli", "yapi-mcp"]
+		}
+	}
+}
 ```
 
 ### skill 配置
