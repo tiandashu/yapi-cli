@@ -93,6 +93,8 @@ yapi --help
 
 **2. 安装 skill**
 
-安装到当前项目的
+```
+curl -fsSL https://raw.githubusercontent.com/tiandashu/yapi-cli/refs/heads/master/scripts/install-skills.sh | sh
+```
 
 ### token 对比
