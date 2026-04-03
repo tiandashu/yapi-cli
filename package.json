@@ -1,6 +1,6 @@
 {
 	"name": "@vtian/yapi-cli",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "CLI-first YApi toolkit with MCP adapter; Cursor skills use the same yapi CLI",
 	"main": "dist/cli/public-api.js",
 	"types": "dist/cli/public-api.d.ts",
