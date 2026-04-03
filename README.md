@@ -93,12 +93,12 @@ yapi --help
 
 **2. 安装 skill**
 
-在任意目录执行（无本地仓库时从 GitHub 拉取 `dist/yapi-skills.zip`；若已 clone 且执行过 `npm run build`，会优先用本地的 `dist/yapi-skills.zip`）：
+在任意目录执行：脚本会 **始终从 GitHub 下载** `dist/yapi-skills.zip` 并解压到当前目录下的 `.agents/skills/yapi-cli-skill`（需已安装 `curl`、`unzip`）。
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/tiandashu/yapi-cli/refs/heads/master/scripts/install-skills.sh | sh
 ```
 
-可选环境变量：`YAPI_AGENT_DIR`（默认 `.agents/skills`）、`YAPI_SKILLS_ZIP_URL`（覆盖 zip 下载地址，便于 fork）。
+可选环境变量：`YAPI_AGENT_DIR`（默认 `.agents/skills`）、`YAPI_SKILLS_ZIP_URL`（覆盖 zip 的下载 URL，便于 fork 或镜像）。
 
 ### token 对比
