@@ -13,7 +13,7 @@
   "bin": {
     "yapi": "./dist/cli/index.js",
     "yapi-mcp": "./dist/mcp/index.js",
-    "yapi-skill": "./dist/skills/index.js"
+    "yapi-skill": "./dist/skills/yapi-cli-skill/index.js"
   },
   "scripts": {
     "clean": "rm -rf dist",

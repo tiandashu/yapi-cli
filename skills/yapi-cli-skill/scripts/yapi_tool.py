@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -34,7 +35,7 @@ def main() -> int:
     mock_cmd.add_argument("--project", help="Single project ID")
 
     args = parser.parse_args()
-    repo_root = Path(__file__).resolve().parents[3]
+    repo_root = find_yapi_cli_root(Path(__file__).resolve().parent)
 
     if args.command == "list":
       command = build_cli_command(repo_root, "cli", "list", project=args.project, category=args.category, json_output=True)
@@ -47,7 +48,9 @@ def main() -> int:
     else:
       command = build_cli_command(repo_root, "skill", "mock", args.id_or_path, project=args.project)
 
-    completed = subprocess.run(command, cwd=repo_root, text=True, capture_output=True)
+    # YApi resolves yapi.config.json upward from process cwd — use invoker's cwd, not yapi-cli root.
+    config_cwd = Path(os.environ.get("YAPI_CONFIG_CWD", os.getcwd())).resolve()
+    completed = subprocess.run(command, cwd=str(config_cwd), text=True, capture_output=True)
     if completed.returncode != 0:
         sys.stderr.write(completed.stderr or completed.stdout)
         return completed.returncode
@@ -67,8 +70,8 @@ def main() -> int:
 
 def build_cli_command(repo_root: Path, entrypoint: str, action: str, *values: str, **options: object) -> list[str]:
     if entrypoint == "skill":
-        compiled = repo_root / "dist" / "skills" / "index.js"
-        source = repo_root / "skills" / "index.ts"
+        compiled = repo_root / "dist" / "skills" / "yapi-cli-skill" / "index.js"
+        source = repo_root / "skills" / "yapi-cli-skill" / "index.ts"
     else:
         compiled = repo_root / "dist" / "cli" / "index.js"
         source = repo_root / "cli" / "index.ts"
@@ -90,6 +93,38 @@ def build_cli_command(repo_root: Path, entrypoint: str, action: str, *values: st
             command.append(str(value))
 
     return command
+
+
+def find_yapi_cli_root(start: Path) -> Path:
+    """Resolve the yapi-cli package root (skill script may live under skills/yapi-cli-skill/scripts or .cursor/skills/<name>/scripts)."""
+    env_root = os.environ.get("YAPI_CLI_ROOT", "").strip()
+    if env_root:
+        d = Path(env_root).resolve()
+        pkg = d / "package.json"
+        if pkg.is_file():
+            try:
+                if json.loads(pkg.read_text(encoding="utf-8")).get("name") == "yapi-cli":
+                    return d
+            except (OSError, json.JSONDecodeError):
+                pass
+
+    for d in [start, *start.parents]:
+        pkg = d / "package.json"
+        if not pkg.is_file():
+            continue
+        try:
+            name = json.loads(pkg.read_text(encoding="utf-8")).get("name")
+        except (OSError, json.JSONDecodeError):
+            continue
+        if name == "yapi-cli" and _has_skill_source(d):
+            return d
+    raise RuntimeError(
+        "Could not find yapi-cli repo root (expected package.json name yapi-cli and skills entry index.ts)"
+    )
+
+
+def _has_skill_source(repo: Path) -> bool:
+    return (repo / "skills" / "yapi-cli-skill" / "index.ts").is_file()
 
 
 if __name__ == "__main__":

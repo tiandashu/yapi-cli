@@ -19,7 +19,7 @@
   "include": [
     "cli/**/*",
     "mcp/**/*",
-    "skills/index.ts"
+    "skills/yapi-cli-skill/index.ts"
   ],
   "exclude": [
     "node_modules",
